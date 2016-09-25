@@ -4,6 +4,7 @@ from rest_framework import viewsets
 from .models import Movie
 from django.contrib.auth.models import User
 from .serializers import MovieSerializer, UserSerializer
+from django.contrib.auth import authenticate, login
 # Create your views here.
 
 def index(request):
@@ -18,3 +19,8 @@ class UserViewSet(viewsets.ModelViewSet):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 
+def authentication(request):
+	if not authenticate(request.POST["username"],request.POST["password"]):
+		login(request, request.POST["username"])
+		return
+	return None

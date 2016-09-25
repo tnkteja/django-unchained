@@ -9,7 +9,7 @@ from django.test import Client
 client = Client()
 
 # Authentication
-response = client.login(username="user",password="admno645")
+response = client.login(username="user",password="user")
 #response = client.post('/api/authentication',{"username":"user","password":"user"})
 
 print response

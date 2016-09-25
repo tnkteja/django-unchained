@@ -31,6 +31,8 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = (
+    'csc510project.apps.Csc510ProjectConfig',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

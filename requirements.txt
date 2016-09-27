@@ -5,3 +5,4 @@ psycopg2==2.6.1
 whitenoise==2.0.6
 djangorestframework==3.4.7
 django-social-auth==0.7.28
+tropo-webapi-python==0.1.3

@@ -19,6 +19,8 @@ from django.views.generic.base import TemplateView
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='index.html'), name="home"),
     url(r'^api/authentication',views.authentication),
+    url(r'^api/logout',views.logout),
+    url(r'^api/account',views.account),
     url(r'^api/',include(restrouter.urls)),
     url(r'^admin/', include(admin.site.urls)),
 ]

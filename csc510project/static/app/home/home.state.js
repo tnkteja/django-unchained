@@ -16,8 +16,8 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'static/app/entities/movie/movies.html',
-                    controller: 'MovieController',
+                    templateUrl: 'static/app/home/home.html',
+                    controller: 'HomeController',
                     controllerAs: 'vm'
                 }
             },

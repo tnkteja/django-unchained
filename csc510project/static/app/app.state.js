@@ -5,9 +5,9 @@
         .module('csc510ProjectApp')
         .config(stateConfig);
 
-    stateConfig.$inject = ['$stateProvider'];
+    stateConfig.$inject = ['$stateProvider','$httpProvider'];
 
-    function stateConfig($stateProvider) {
+    function stateConfig($stateProvider,$httpProvider) {
         $stateProvider.state('app', {
             abstract: true,
             views: {
@@ -25,5 +25,7 @@
                 ]
             }
         });
+        $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+        $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     }
 })();

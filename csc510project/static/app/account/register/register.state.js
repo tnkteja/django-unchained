@@ -17,7 +17,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/account/register/register.html',
+                    templateUrl: 'static/app/account/register/register.html',
                     controller: 'RegisterController',
                     controllerAs: 'vm'
                 }

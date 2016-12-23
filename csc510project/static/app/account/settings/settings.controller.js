@@ -31,9 +31,9 @@
             return {
                 activated: account.activated,
                 email: account.email,
-                firstName: account.firstName,
+                first_name: account.first_name,
                 langKey: account.langKey,
-                lastName: account.lastName,
+                last_name: account.last_name,
                 login: account.login,
                 isNormalUser: isNormalUser
             };

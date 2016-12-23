@@ -18,39 +18,39 @@
             <form name="form" role="form" novalidate ng-submit="vm.save()" show-validation>
 
                 <div class="form-group">
-                    <label class="control-label" for="firstName">First Name</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Your first name"
-                           ng-model="vm.settingsAccount.firstName" ng-minlength=1 ng-maxlength=50 required maxlength="50">
-                    <div ng-show="form.firstName.$dirty && form.firstName.$invalid">
+                    <label class="control-label" for="first_name">First Name</label>
+                    <input type="text" class="form-control" id="first_nameḥ" name="first_name" placeholder="Your first name"
+                           ng-model="vm.settingsAccount.first_name" ng-minlength=1 ng-maxlength=50 required maxlength="50">
+                    <div ng-show="form.first_name.$dirty && form.first_name.$invalid">
                         <p class="help-block"
-                               ng-show="form.firstName.$error.required">
+                               ng-show="form.first_name.$error.required">
                             Your first name is required.
                         </p>
                         <p class="help-block"
-                               ng-show="form.firstName.$error.minlength">
+                               ng-show="form.first_name.$error.minlength">
                             Your first name is required to be at least 1 character.
                         </p>
                         <p class="help-block"
-                               ng-show="form.firstName.$error.maxlength">
+                               ng-show="form.first_name.$error.maxlength">
                             Your first name cannot be longer than 50 characters.
                         </p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="lastName">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Your last name"
-                           ng-model="vm.settingsAccount.lastName" ng-minlength=1 ng-maxlength=50 required maxlength="50">
-                    <div ng-show="form.lastName.$dirty && form.lastName.$invalid">
+                    <label class="control-label" for="last_name">Last Name</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Your last name"
+                           ng-model="vm.settingsAccount.last_name" ng-minlength=1 ng-maxlength=50 required maxlength="50">
+                    <div ng-show="form.last_name.$dirty && form.last_name.$invalid">
                         <p class="help-block"
-                               ng-show="form.lastName.$error.required">
+                               ng-show="form.last_name.$error.required">
                             Your last name is required.
                         </p>
                         <p class="help-block"
-                               ng-show="form.lastName.$error.minlength">
+                               ng-show="form.last_name.$error.minlength">
                             Your last name is required to be at least 1 character.
                         </p>
                         <p class="help-block"
-                               ng-show="form.lastName.$error.maxlength">
+                               ng-show="form.last_name.$error.maxlength">
                             Your last name cannot be longer than 50 characters.
                         </p>
                     </div>

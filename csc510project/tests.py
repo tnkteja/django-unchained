@@ -1,15 +1,34 @@
-from django.test import TestCase
-from django.test.utils import setup_test_environment
-setup_test_environment()
-import unittest
-from django.test import Client
+# from django.test import TestCase
+# from django.test.utils import setup_test_environment
+# setup_test_environment()
+# import unittest
+from json import loads
+from random import sample, random, randint
+from string import ascii_lowercase
+
+from django.test import Client, TestCase
 # Create your tests here.
 
-
-client = Client()
+c = Client()
 
 # Authentication
-response = client.login(username="user",password="user")
-#response = client.post('/api/authentication',{"username":"user","password":"user"})
+r = c.post('/api/authentication',{"j_username":"ntadiko","j_password":"ntadiko"})
+print r.status_code
+print r.content
+print '-'*32
+r=c.get("/api/account")
+print r.status_code
+print r.json()
+print '-'*32
+rstring=lambda :  ''.join(sample(ascii_lowercase, randint(1,25)))  
+r=c.post("/api/account",{"first_name": rstring(), "last_name": rstring(), "email": "ntadiko@ncsu.edu"})
+print r.status_code
+print r
+print '-'*32
+r=c.post("/api/account/change_password",{"new_password":"ntadiko"})
+print r.status_code
 
-print response
+print '-'*32
+r=c.post("/api/register",{"username":rstring(),"email": "ntadiko@ncsu.edu","password":"ntadiko"})
+print r.status_code
+

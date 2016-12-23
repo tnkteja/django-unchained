@@ -12,12 +12,13 @@
             parent: 'account',
             url: '/settings',
             data: {
-                authorities: ['ROLE_USER'],
+                /*authorities: ['ROLE_USER'],*/
+                
                 pageTitle: 'Settings'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/account/settings/settings.html',
+                    templateUrl: 'static/app/account/settings/settings.html',
                     controller: 'SettingsController',
                     controllerAs: 'vm'
                 }

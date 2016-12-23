@@ -66,6 +66,8 @@ INSTALLED_APPS = (
 #     'django.contrib.auth.backends.ModelBackend',
 # )
 
+# AUTH_USER_MODEL = "csc510project.CustomUser"
+
 TWITTER_CONSUMER_KEY         = ''
 TWITTER_CONSUMER_SECRET      = ''
 FACEBOOK_APP_ID              = ''

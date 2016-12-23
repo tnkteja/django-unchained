@@ -12,12 +12,12 @@
             parent: 'account',
             url: '/password',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: [],
                 pageTitle: 'Password'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/account/password/password.html',
+                    templateUrl: 'static/app/account/password/password.html',
                     controller: 'PasswordController',
                     controllerAs: 'vm'
                 }

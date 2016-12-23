@@ -35,10 +35,8 @@
                     vm.success = 'OK';
                 }).catch(function (response) {
                     vm.success = null;
-                    if (response.status === 400 && response.data === 'login already in use') {
+                    if (response.status === 400 && response.data === 'username already in use') {
                         vm.errorUserExists = 'ERROR';
-                    } else if (response.status === 400 && response.data === 'e-mail address already in use') {
-                        vm.errorEmailExists = 'ERROR';
                     } else {
                         vm.error = 'ERROR';
                     }

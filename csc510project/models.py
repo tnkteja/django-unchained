@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db.models import *
 
 # Create your models here.
@@ -14,5 +15,5 @@ class Critic(Model):
 	isActive=BooleanField()
 
 class ExtendedUser(Model):
-	user = OneToOneField(settings.AUTH_USER_MODEL, on_delete=CASCADE)
+	user = OneToOneField(User, on_delete=CASCADE)
 	roles = CharField(max_length=255)

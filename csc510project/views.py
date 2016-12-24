@@ -74,7 +74,7 @@ class AccountViewSet(viewsets.ViewSet):
             "first_name": request.user.first_name,
             "last_name": request.user.last_name,
             "email": request.user.email,
-            "roles": User.objects.get(id=request.user.id).extendeduser.roles
+            "roles": loads(request.user.extendeduser.roles)
             }) if request.user.is_authenticated else HttpResponseUnauthorized()
 
     def update(self,request, *args, **kwargs):
@@ -108,7 +108,7 @@ class AccountViewSet(viewsets.ViewSet):
                 u=User.objects.create_user(request.data["username"], email=request.data["email"], password=request.data["password"])
                 u.extendeduser=ExtendedUser()
                 u.extendeduser.roles=dumps(["ROLE_USER"])
-                u.save()
+                u.extendeduser.save()
                 return HttpResponse()
         except Exception as e:
             return HttpResponseBadRequest(e)

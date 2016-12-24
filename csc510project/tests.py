@@ -28,6 +28,6 @@ r=c.post("/api/account/change_password",{"new_password":"ntadiko"})
 print r.status_code
 
 print '-'*32
-r=c.post("/api/register",{"username":"ntadiko","email": "ntadiko@ncsu.edu","password":"ntadiko"})
+r=c.post("/api/register",{"username":rstring(),"email": "ntadiko@ncsu.edu","password":"ntadiko"})
 print r.status_code
 print r.content

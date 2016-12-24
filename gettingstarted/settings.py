@@ -27,6 +27,13 @@ SECRET_KEY = 'i+acxn5(akgsn!sr4^qgf(^m&*@+g1@u^t@=8s@axc41ml*f=s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "csc510project@gmail.com"
+EMAIL_HOST_PASSWORD = "1#csc510project#1"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 
 # Application definition
 

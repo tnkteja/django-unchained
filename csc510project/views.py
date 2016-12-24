@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.core import serializers
 from rest_framework import viewsets
-from .models import Movie, Critic
+from .models import Movie, Critic, ExtendedUser
 from django.contrib.auth.models import User
 from .serializers import MovieSerializer, UserSerializer, CriticSerializer
 from django.contrib.auth import authenticate, login, logout as Logout
@@ -13,7 +13,7 @@ from rest_framework import status
 import logging
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .serializers import UserSerializer
-import json
+from json import dumps, loads
 # Create your views here.
 
 logger = logging.getLogger("django")
@@ -46,7 +46,6 @@ def authentication(request):
     return HttpResponseBadRequest()
 
 def logout(request):
-    print request.session
     Logout(request)
     return HttpResponse()
 
@@ -60,7 +59,7 @@ def account(request):
     """
     return JsonResponse({
         "firstNname": request.user.first_name,
-        "lastName": request.user.last_name, 
+        "lastName": request.user.last_name,
         "email": request.user.email,
         "roles":request.user.extendedUser.roles
         }) if request.user.is_authenticated else HttpResponseUnauthorized()
@@ -70,16 +69,17 @@ from json import loads
 
 class AccountViewSet(viewsets.ViewSet):
     def get(self, request):
-        user=User.objects.get(username=request.user.get_username())
-        print user.username
+        print request.user.username
         return JsonResponse({
-            "first_name": user.first_name,
-            "last_name": user.last_name, 
-            "email": user.email,
-            "roles": user.extendeduser.roles
+            "first_name": request.user.first_name,
+            "last_name": request.user.last_name,
+            "email": request.user.email,
+            "roles": User.objects.get(id=request.user.id).extendeduser.roles
             }) if request.user.is_authenticated else HttpResponseUnauthorized()
 
     def update(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseUnauthorized()
         try:
             user=User.objects.get(id=request.user.id)
             user.first_name=request.data["first_name"]
@@ -101,12 +101,15 @@ class AccountViewSet(viewsets.ViewSet):
 
     def register(self, request):
         try:
-            if User.objects.get(username=request.data["username"]):
+            try:
+                User.objects.get(username=request.data["username"])
                 return HttpResponseBadRequest("Username already exists")
-            u=User.create_user(request.data["username"], email=request.data["email"], password=request.data["password"])
-            u.extendeduser=Extendeduser()
-            u.extendeduser.roles=dumps(["ROLE_USER"])
-            u.save()
+            except User.DoesNotExist as e:
+                u=User.objects.create_user(request.data["username"], email=request.data["email"], password=request.data["password"])
+                u.extendeduser=ExtendedUser()
+                u.extendeduser.roles=dumps(["ROLE_USER"])
+                u.save()
+                return HttpResponse()
         except Exception as e:
             return HttpResponseBadRequest(e)
 
@@ -117,4 +120,3 @@ class ExtendedAccountViewSet(viewsets.ViewSet):
             return HttpResponse()
         except Exception as e:
             return HttpResponseBadRequest(e)
-

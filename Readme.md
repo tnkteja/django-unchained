@@ -1,1 +1,1 @@
-
+It is a opiniated view of the complete Web Application using Web APIs, based on python's **DJANGO** framework. The core authentication mechanism is django based, and it  also includes a mashup consisting of various social logins.

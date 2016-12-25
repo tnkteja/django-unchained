@@ -16,7 +16,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/account/reset/finish/reset.finish.html',
+                    templateUrl: 'static/app/account/reset/finish/reset.finish.html',
                     controller: 'ResetFinishController',
                     controllerAs: 'vm'
                 }

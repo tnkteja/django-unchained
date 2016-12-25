@@ -1,8 +1,11 @@
 #!/usr/bi/python
+from __future__ import unicode_literals
 
+from base64 import b64encode
 from hashlib import md5
 from json import loads, dumps
 import logging
+from time import time
 
 from django.contrib.auth import authenticate, login, logout as Logout
 from django.contrib.auth.models import User
@@ -49,7 +52,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 def authentication(request):
     user = authenticate(username=request.POST["j_username"],password=request.POST["j_password"])
-    if user and user.is_active:
+    if user:
         login(request, user)
         return HttpResponse()
     return HttpResponseBadRequest()
@@ -107,24 +110,24 @@ class AccountViewSet(viewsets.ViewSet):
             return HttpResponseBadRequest(e)
 
     def register(self, request):
+        # try:
         try:
-            try:
-                User.objects.get(username=request.data["username"])
-                return HttpResponseBadRequest("Username already exists")
-            except User.DoesNotExist as e:
-                u=User.create_user(request.data["username"], email=request.data["email"], password=request.data["password"])
-                u.extendeduser=Extendeduser()
-                u.extendeduser.roles=dumps(["ROLE_USER"])
-                m=md5()
-                m.update(u.username+u.email)
-                u.extendeduser.activationkey=m.digest()
-                u.extendeduser.save()
-                u.is_active = False
-                u.save()
-                send_mail("Activate",self.__class__.mail_template%(u.username,'',u.extendeduser.activationkey,"admin."), "csc510project@gmail.com", [u.email])
-                return HttpResponse()
-        except Exception as e:
-            return HttpResponseBadRequest(e)
+            User.objects.get(username=request.data["username"])
+            return HttpResponseBadRequest("Username already exists")
+        except User.DoesNotExist as e:
+            u=User.objects.create_user(request.data["username"], email=request.data["email"], password=request.data["password"])
+            u.extendeduser=ExtendedUser()
+            u.extendeduser.roles=dumps(["ROLE_USER"])
+            m=md5()
+            m.update(u.username+u.email)
+            u.extendeduser.activationkey=b64encode(m.digest())
+            u.extendeduser.save()
+            u.is_active = False
+            u.save()
+            send_mail("Activate",u.extendeduser.activationkey, "csc510project@gmail.com", [u.email], fail_silently=False)
+            return HttpResponse()
+        # except Exception as e:
+        #     return HttpResponseBadRequest(e)
 
     mail_template = \
     """
@@ -155,17 +158,37 @@ class AccountViewSet(viewsets.ViewSet):
 
     def activate(self, request, *args, **kwargs):
         try:
-            eu=ExtendedUser.objects.get(activationkey=self.request.data["key"])
+            eu=ExtendedUser.objects.get(activationkey=request.GET["key"])
+            if eu.user.is_active:
+                return HttpResponseBadRequest("User already activated.")
             eu.user.is_active=True
+            eu.user.save()
             return HttpResponse()
         except Exception as e:
             return HttpResponseBadRequest(e)
 
-    def reset_begin(self, request, *args, **kwargs):
-        pass
+    def reset_password_init(self, request, *args, **kwargs):
+        try:
+            u=User.objects.get(email=request.POST["email"])[0]
+            m=md5()
+            m.update(u.username+u.email+time())
+            u.extendeduser.resetkey=b64encode(m.digest())
+            u.extendeduser.save()
+            u.email_user("Reset Password",u.extendeduser.resetkey, "csc510project@gmail.com", fail_silently=False)
+            return HttpResponse()
+        except User.DoesNotExist as e:
+            HttpResponseBadRequest("e-mail address not registered")
+        except Exception as e:
+            return HttpResponseBadRequest(e)
 
-    def reset_end(self, request, *args, **kwargs):
-        pass
+    def reset_password_finish(self, request, *args, **kwargs):
+        try:
+            eu=ExtendedUser.objects.get(resetkey=request.POST["key"])
+            eu.user.set_password(request.POST("new_password"))
+            eu.user.save()
+            return HttpResponse()
+        except Exception as e:
+            return HttpResponseBadRequest(e)
 
 
 class ExtendedAccountViewSet(viewsets.ViewSet):

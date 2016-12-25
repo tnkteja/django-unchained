@@ -12,7 +12,7 @@
             parent: 'account',
             url: '/register',
             data: {
-                authorities: ["ROLE_USER"],
+                authorities: [],
                 pageTitle: 'Registration'
             },
             views: {

@@ -25,7 +25,7 @@
             if (vm.resetAccount.password !== vm.confirmPassword) {
                 vm.doNotMatch = 'ERROR';
             } else {
-                Auth.resetPasswordFinish({key: $stateParams.key, newPassword: vm.resetAccount.password}).then(function () {
+                Auth.resetPasswordFinish({key: $stateParams.key, new_password: vm.resetAccount.password}).then(function () {
                     vm.success = 'OK';
                 }).catch(function () {
                     vm.success = null;

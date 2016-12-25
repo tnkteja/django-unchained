@@ -12,6 +12,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import viewsets
+
 from .models import Movie, Critic, ExtendedUser
 from django.contrib.auth.models import User
 from .serializers import MovieSerializer, UserSerializer, CriticSerializer
@@ -110,7 +111,6 @@ class AccountViewSet(viewsets.ViewSet):
             try:
                 User.objects.get(username=request.data["username"])
                 return HttpResponseBadRequest("Username already exists")
-
             except User.DoesNotExist as e:
                 u=User.create_user(request.data["username"], email=request.data["email"], password=request.data["password"])
                 u.extendeduser=Extendeduser()

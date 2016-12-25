@@ -15,10 +15,6 @@ class Critic(Model):
 	isActive=BooleanField()
 
 class ExtendedUser(Model):
-<<<<<<< HEAD
 	user = OneToOneField(settings.AUTH_USER_MODEL, on_delete=CASCADE)
 	activationkey = CharField(max_length=255)
-=======
-	user = OneToOneField(User, on_delete=CASCADE)
->>>>>>> f30e05303020431e30534a00c7800e18bc2ea4db
 	roles = CharField(max_length=255)

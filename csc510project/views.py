@@ -12,16 +12,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import viewsets
-<<<<<<< HEAD
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK
 
-from .models import Movie, Critic
-from .serializers import MovieSerializer, UserSerializer, CriticSerializer
-
-
-=======
 from .models import Movie, Critic, ExtendedUser
 from django.contrib.auth.models import User
 from .serializers import MovieSerializer, UserSerializer, CriticSerializer
@@ -34,7 +25,6 @@ import logging
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .serializers import UserSerializer
 from json import dumps, loads
->>>>>>> f30e05303020431e30534a00c7800e18bc2ea4db
 # Create your views here.
 
 logger = logging.getLogger("django")
@@ -71,13 +61,6 @@ def logout(request):
 class HttpResponseUnauthorized(HttpResponse):
     status_code = 401
 
-<<<<<<< HEAD
-class AccountViewSet(viewsets.ViewSet):
-    def get(self, request):
-        return JsonResponse({
-            "first_name": request.user.first_name,
-            "last_name": request.user.last_name, 
-=======
 def account(request):
     """
     Note: Django provides a "login_required" decorator but it need a rediret login url
@@ -99,7 +82,6 @@ class AccountViewSet(viewsets.ViewSet):
         return JsonResponse({
             "first_name": request.user.first_name,
             "last_name": request.user.last_name,
->>>>>>> f30e05303020431e30534a00c7800e18bc2ea4db
             "email": request.user.email,
             "roles": loads(request.user.extendeduser.roles)
             }) if request.user.is_authenticated else HttpResponseUnauthorized()
@@ -131,26 +113,12 @@ class AccountViewSet(viewsets.ViewSet):
             try:
                 User.objects.get(username=request.data["username"])
                 return HttpResponseBadRequest("Username already exists")
-<<<<<<< HEAD
-            u=User.create_user(request.data["username"], email=request.data["email"], password=request.data["password"])
-            u.extendeduser=Extendeduser()
-            u.extendeduser.roles=dumps(["ROLE_USER"])
-            m=md5()
-            m.update(u.username+u.email)
-            u.extendeduser.activationkey=m.digest()
-            u.extendeduser.save()
-            u.is_active = False
-            u.save()
-            send_mail("Activate",self.__class__.mail_template%(u.username,'',u.extendeduser.activationkey,"admin."), "csc510project@gmail.com", [u.email])
-            return HttpResponse()
-=======
             except User.DoesNotExist as e:
                 u=User.objects.create_user(request.data["username"], email=request.data["email"], password=request.data["password"])
                 u.extendeduser=ExtendedUser()
                 u.extendeduser.roles=dumps(["ROLE_USER"])
                 u.extendeduser.save()
                 return HttpResponse()
->>>>>>> f30e05303020431e30534a00c7800e18bc2ea4db
         except Exception as e:
             return HttpResponseBadRequest(e)
 

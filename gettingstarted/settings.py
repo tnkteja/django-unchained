@@ -32,7 +32,7 @@ DEBUG = True
 INSTALLED_APPS = (
     'csc510project.apps.Csc510ProjectConfig',
     'rest_framework',
-    #'social_auth',
+    'social.apps.django_app.default',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,29 +49,11 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
-# AUTHENTICATION_BACKENDS = (
-#     'social_auth.backends.twitter.TwitterBackend',
-#     'social_auth.backends.facebook.FacebookBackend',
-#     'social_auth.backends.google.GoogleOAuthBackend',
-#     'social_auth.backends.google.GoogleOAuth2Backend',
-#     'social_auth.backends.google.GoogleBackend',
-#     'social_auth.backends.yahoo.YahooBackend',
-#     'social_auth.backends.browserid.BrowserIDBackend',
-#     'social_auth.backends.contrib.linkedin.LinkedinBackend',
-#     'social_auth.backends.contrib.disqus.DisqusBackend',
-#     'social_auth.backends.contrib.livejournal.LiveJournalBackend',
-#     'social_auth.backends.contrib.orkut.OrkutBackend',
-#     'social_auth.backends.contrib.foursquare.FoursquareBackend',
-#     'social_auth.backends.contrib.github.GithubBackend',
-#     'social_auth.backends.contrib.vk.VKOAuth2Backend',
-#     'social_auth.backends.contrib.live.LiveBackend',
-#     'social_auth.backends.contrib.skyrock.SkyrockBackend',
-#     'social_auth.backends.contrib.yahoo.YahooOAuthBackend',
-#     'social_auth.backends.contrib.readability.ReadabilityBackend',
-#     'social_auth.backends.contrib.fedora.FedoraBackend',
-#     'social_auth.backends.OpenIDBackend',
-#     'django.contrib.auth.backends.ModelBackend',
-# )
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.github.GithubOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 # AUTH_USER_MODEL = "csc510project.CustomUser"
 
@@ -85,8 +67,10 @@ ORKUT_CONSUMER_KEY           = ''
 ORKUT_CONSUMER_SECRET        = ''
 GOOGLE_CONSUMER_KEY          = ''
 GOOGLE_CONSUMER_SECRET       = ''
-GOOGLE_OAUTH2_CLIENT_ID      = ''
-GOOGLE_OAUTH2_CLIENT_SECRET  = ''
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY     = "767325776083-avc4hv2fnh0vi7nfnikcd71v3aicksko.apps.googleusercontent.com"
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET  = "dL1oV0rlo0eYCLNY4mBjs-lT"
+SOCIAL_AUTH_GITHUB_KEY       = "8cfb8298c72434ae8e57"
+SOCIAL_AUTH_GITHUB_SECRET   = "8bb56fb1797a01ccc0a4b90eb04a1d3a68cef565"
 FOURSQUARE_CONSUMER_KEY      = ''
 FOURSQUARE_CONSUMER_SECRET   = ''
 VK_APP_ID                    = ''
@@ -109,13 +93,13 @@ LOGIN_ERROR_URL    = '/login-error/'
 
 # If a custom redirect URL is needed that must be different to LOGIN_URL, define the setting:
 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/another-login-url/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = "/login/"
 # A different URL could be defined for newly registered users:
 
-SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/new-users-redirect-url/'
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/#/password'
 # or for newly associated accounts:
 
-SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL = '/new-association-redirect-url/'
+SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL = '/#/'
 # or for account disconnections:
 
 SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/account-disconnected-redirect-url/'
@@ -124,11 +108,60 @@ SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/account-disconnected-redirect-url/'
 SOCIAL_AUTH_BACKEND_ERROR_URL = '/new-error-url/'
 # Configure authentication and association complete URL names to avoid possible clashes:
 
-SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
+# SOCIAL_AUTH_COMPLETE_URL_NAME  = '/'
+
 SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
 # Inactive users can be redirected to a different page if this setting is defined:
 
 SOCIAL_AUTH_INACTIVE_USER_URL = '...'
+
+SOCIAL_AUTH_PIPELINE =  (
+    # Get the information we can about the user and return it in a simple
+    # format to create the user instance later. On some cases the details are
+    # already part of the auth response from the provider, but sometimes this
+    # could hit a provider API.
+    'social.pipeline.social_auth.social_details',
+
+    # Get the social uid from whichever service we're authing thru. The uid is
+    # the unique identifier of the given user in the provider.
+    'social.pipeline.social_auth.social_uid',
+
+    # Verifies that the current auth process is valid within the current
+    # project, this is where emails and domains whitelists are applied (if
+    # defined).
+    'social.pipeline.social_auth.auth_allowed',
+
+    # Checks if the current social-account is already associated in the site.
+    'social.pipeline.social_auth.social_user',
+
+    # Make up a username for this person, appends a random string at the end if
+    # there's any collision.
+    'social.pipeline.user.get_username',
+
+    # Send a validation email to the user to verify its email address.
+    # Disabled by default.
+    # 'social.pipeline.mail.mail_validation',
+
+    # Associates the current social details with another user account with
+    # a similar email address. Disabled by default.
+    # 'social.pipeline.social_auth.associate_by_email',
+
+    # Create a user account if we haven't found one yet.
+    'social.pipeline.user.create_user',
+
+    "csc510project.views.create_extendeduser",
+
+    # Create the record that associates the social account with the user.
+    'social.pipeline.social_auth.associate_user',
+
+    # Populate the extra_data field in the social record with the values
+    # specified by settings (and the default ones like access_token, etc).
+    'social.pipeline.social_auth.load_extra_data',
+
+    # Update the user record with any changed info from the auth service.
+    'social.pipeline.user.user_details',
+
+)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

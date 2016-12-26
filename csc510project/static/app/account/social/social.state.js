@@ -17,7 +17,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/account/social/social-register.html',
+                    templateUrl: 'static/app/account/social/social-register.html',
                     controller: 'SocialRegisterController',
                     controllerAs: 'vm'
                 }

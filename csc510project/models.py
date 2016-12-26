@@ -17,6 +17,7 @@ class Critic(Model):
 class ExtendedUser(Model):
 	user = OneToOneField(settings.AUTH_USER_MODEL, on_delete=CASCADE)
 	activationkey = CharField(max_length=255, unique=True)
-	resetkey = CharField(max_length=255, unique=True)
+	resetkey = CharField(max_length=255)
+	resetkeyexpirytime = IntegerField(default=0)
 	roles = CharField(max_length=255)
 	primaryemail = CharField(max_length=255, unique=True, default="")

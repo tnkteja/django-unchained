@@ -13,7 +13,7 @@
             scope: {
                 provider: '@ngProvider'
             },
-            templateUrl: 'app/account/social/directive/social.html',
+            templateUrl: 'static/app/account/social/directive/social.html',
             link: linkFunc
         };
 

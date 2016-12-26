@@ -19,9 +19,10 @@ from rest_framework import viewsets
 from .models import Movie, Critic, ExtendedUser
 from django.contrib.auth.models import User
 from .serializers import MovieSerializer, UserSerializer, CriticSerializer
-from django.contrib.auth import authenticate, login, logout as Logout
+from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
 from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK
 from rest_framework.decorators import api_view
 from rest_framework import status
 import logging
@@ -58,7 +59,7 @@ def authentication(request):
     return HttpResponseBadRequest()
 
 def logout(request):
-    Logout(request)
+    logout(request)
     return HttpResponse()
 
 class HttpResponseUnauthorized(HttpResponse):
@@ -76,6 +77,12 @@ def account(request):
         "roles":request.user.extendedUser.roles
         }) if request.user.is_authenticated else HttpResponseUnauthorized()
 
+def create_extendeduser(backend, user, response, *args, **kwargs):
+    if not hasattr(user, "extendeduser"):
+        user.extendeduser=ExtendedUser()
+        user.extendeduser.roles=dumps(["ROLE_USER"])
+        user.extendeduser.save()
+    #user.email_user("Account Created","", "csc510project@gmail.com", fail_silently=False)
 
 class AccountViewSet(viewsets.ViewSet):
     def get(self, request):
@@ -84,7 +91,7 @@ class AccountViewSet(viewsets.ViewSet):
             "first_name": request.user.first_name,
             "last_name": request.user.last_name,
             "email": request.user.email,
-            "roles": loads(request.user.extendeduser.roles)
+            "authorities": loads(request.user.extendeduser.roles)
             }) if request.user.is_authenticated else HttpResponseUnauthorized()
 
     def update(self,request, *args, **kwargs):
@@ -173,6 +180,7 @@ class AccountViewSet(viewsets.ViewSet):
             m=md5()
             m.update(u.username+u.email+time())
             u.extendeduser.resetkey=b64encode(m.digest())
+            u.extendeduserresetkeyexpirytime = time() + 86400
             u.extendeduser.save()
             u.email_user("Reset Password",u.extendeduser.resetkey, "csc510project@gmail.com", fail_silently=False)
             return HttpResponse()
@@ -184,9 +192,11 @@ class AccountViewSet(viewsets.ViewSet):
     def reset_password_finish(self, request, *args, **kwargs):
         try:
             eu=ExtendedUser.objects.get(resetkey=request.POST["key"])
-            eu.user.set_password(request.POST("new_password"))
-            eu.user.save()
-            return HttpResponse()
+            if time() > eu.resetkeyexpirytime:
+                eu.user.set_password(request.POST("new_password"))
+                eu.user.save()
+                return HttpResponse()
+            return HttpResponseBadRequest("Reset Key Expired")
         except Exception as e:
             return HttpResponseBadRequest(e)
 

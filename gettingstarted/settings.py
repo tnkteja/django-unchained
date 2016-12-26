@@ -61,28 +61,10 @@ TWITTER_CONSUMER_KEY         = ''
 TWITTER_CONSUMER_SECRET      = ''
 FACEBOOK_APP_ID              = ''
 FACEBOOK_API_SECRET          = ''
-LINKEDIN_CONSUMER_KEY        = ''
-LINKEDIN_CONSUMER_SECRET     = ''
-ORKUT_CONSUMER_KEY           = ''
-ORKUT_CONSUMER_SECRET        = ''
-GOOGLE_CONSUMER_KEY          = ''
-GOOGLE_CONSUMER_SECRET       = ''
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY     = "767325776083-avc4hv2fnh0vi7nfnikcd71v3aicksko.apps.googleusercontent.com"
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET  = "dL1oV0rlo0eYCLNY4mBjs-lT"
 SOCIAL_AUTH_GITHUB_KEY       = "8cfb8298c72434ae8e57"
 SOCIAL_AUTH_GITHUB_SECRET   = "8bb56fb1797a01ccc0a4b90eb04a1d3a68cef565"
-FOURSQUARE_CONSUMER_KEY      = ''
-FOURSQUARE_CONSUMER_SECRET   = ''
-VK_APP_ID                    = ''
-VK_API_SECRET                = ''
-LIVE_CLIENT_ID               = ''
-LIVE_CLIENT_SECRET           = ''
-SKYROCK_CONSUMER_KEY         = ''
-SKYROCK_CONSUMER_SECRET      = ''
-YAHOO_CONSUMER_KEY           = ''
-YAHOO_CONSUMER_SECRET        = ''
-READABILITY_CONSUMER_SECRET  = ''
-READABILITY_CONSUMER_SECRET  = ''
 
 # Setup login URLs:
 
@@ -253,6 +235,7 @@ STATIC_URL = '/static/'
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
+    os.path.join(PROJECT_ROOT+"../csc510project/","static")
 )
 
 # Simplified static file serving.

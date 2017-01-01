@@ -18,7 +18,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/critic/critics.html',
+                    templateUrl: 'static/app/entities/critic/critics.html',
                     controller: 'CriticController',
                     controllerAs: 'vm'
                 }
@@ -35,7 +35,7 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/critic/critic-detail.html',
+                    templateUrl: 'static/app/entities/critic/critic-detail.html',
                     controller: 'CriticDetailController',
                     controllerAs: 'vm'
                 }
@@ -54,7 +54,7 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/critic/critic-dialog.html',
+                    templateUrl: 'static/app/entities/critic/critic-dialog.html',
                     controller: 'CriticDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -82,7 +82,7 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/critic/critic-dialog.html',
+                    templateUrl: 'static/app/entities/critic/critic-dialog.html',
                     controller: 'CriticDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -107,7 +107,7 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/critic/critic-delete-dialog.html',
+                    templateUrl: 'static/app/entities/critic/critic-delete-dialog.html',
                     controller: 'CriticDeleteController',
                     controllerAs: 'vm',
                     size: 'md',

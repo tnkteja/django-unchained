@@ -21,9 +21,12 @@ from django.contrib.auth.models import User
 from .serializers import MovieSerializer, UserSerializer, CriticSerializer
 from django.contrib.auth import authenticate, login, logout
 from django.forms.models import model_to_dict
+from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework import status
 import logging
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -37,10 +40,6 @@ def index(request):
     # return HttpResponse('Hello from Python!')
     logger.debug(request)
     return render_to_response(request, 'index.html')
-
-class MovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all()
-    serializer_class = MovieSerializer
 
 class CriticViewSet(viewsets.ModelViewSet):
     queryset = Critic.objects.all()
@@ -59,7 +58,7 @@ def authentication(request):
     return HttpResponseBadRequest()
 
 def logout(request):
-    logout(request)
+    Logout(request)
     return HttpResponse()
 
 class HttpResponseUnauthorized(HttpResponse):
@@ -205,6 +204,26 @@ class ExtendedAccountViewSet(viewsets.ViewSet):
 
     def become_critic(self, request):
         try:
+            u=request.user
+            if u.is_authenticated:
+                u.critic=Critic()
+                u.critic.isActive=True
+                u.critic.save()
+                roles=loads(u.extendeduser.roles)
+                roles.append("ROLE_CRITIC")
+                u.extendeduser.roles=dumps(roles)
+                u.extendeduser.save()
             return HttpResponse()
         except Exception as e:
             return HttpResponseBadRequest(e)
+
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+
+class MoviePublicViewSet(APIView):
+    permission_classes=(IsAuthenticatedOrReadOnly,)
+    pagination_class = LimitOffsetPagination
+
+    def get(self, request, format=None):
+       return HttpResponse()

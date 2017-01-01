@@ -41,6 +41,14 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 )
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20,
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    )
+}
+
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = "csc510project@gmail.com"
 EMAIL_HOST_PASSWORD = "1#csc510project#1"
@@ -68,8 +76,8 @@ SOCIAL_AUTH_GITHUB_SECRET   = "8bb56fb1797a01ccc0a4b90eb04a1d3a68cef565"
 
 # Setup login URLs:
 
-LOGIN_URL          = '/login-form/'
-LOGIN_REDIRECT_URL = '/logged-in/'
+LOGIN_URL          = '/#/login'
+LOGIN_REDIRECT_URL = '/#/'
 LOGIN_ERROR_URL    = '/login-error/'
 # Check Django documentation at Login URL and Login redirect URL
 

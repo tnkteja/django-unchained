@@ -18,7 +18,7 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/movie/movies.html',
+                        templateUrl: 'static/app/entities/movie/movies.html',
                         controller: 'MovieController',
                         controllerAs: 'vm'
                     }
@@ -34,7 +34,7 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/movie/movie-detail.html',
+                        templateUrl: 'static/app/entities/movie/movie-detail.html',
                         controller: 'MovieDetailController',
                         controllerAs: 'vm'
                     }
@@ -69,7 +69,7 @@
             //     },
             //     onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
             //         $uibModal.open({
-            //             templateUrl: 'app/entities/movie/movie-dialog.html',
+            //             templateUrl: 'static/app/entities/movie/movie-dialog.html',
             //             controller: 'MovieDialogController',
             //             controllerAs: 'vm',
             //             backdrop: 'static',
@@ -103,7 +103,7 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/movie/movie-edit.html',
+                        templateUrl: 'static/app/entities/movie/movie-edit.html',
                         controller: 'MovieEditController',
                         controllerAs: 'vm'
                     }
@@ -147,7 +147,7 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/movie/movie-detail.html',
+                        templateUrl: 'static/app/entities/movie/movie-detail.html',
                         controller: 'MovieDetailController',
                         controllerAs: 'vm'
                     }
@@ -167,7 +167,7 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        templateUrl: 'app/entities/review/review-dialog.html',
+                        templateUrl: 'static/app/entities/review/review-dialog.html',
                         controller: 'ReviewDialogController',
                         controllerAs: 'vm',
                         backdrop: 'static',
@@ -213,7 +213,7 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/movie/movie-edit.html',
+                        templateUrl: 'static/app/entities/movie/movie-edit.html',
                         controller: 'MovieEditController',
                         controllerAs: 'vm'
                     }
@@ -234,7 +234,7 @@
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     if ($stateParams.id === 'newReview') {
                         $uibModal.open({
-                            templateUrl: 'app/entities/review/review-dialog.html',
+                            templateUrl: 'static/app/entities/review/review-dialog.html',
                             controller: 'ReviewDialogController',
                             controllerAs: 'vm',
                             backdrop: 'static',
@@ -264,7 +264,7 @@
                         });
                     } else {
                         $uibModal.open({
-                            templateUrl: 'app/entities/question/question-dialog.html',
+                            templateUrl: 'static/app/entities/question/question-dialog.html',
                             controller: 'QuestionDialogController',
                             controllerAs: 'vm',
                             backdrop: 'static',
@@ -311,7 +311,7 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/movie/movie-edit.html',
+                        templateUrl: 'static/app/entities/movie/movie-edit.html',
                         controller: 'MovieEditController',
                         controllerAs: 'vm'
                     }
@@ -330,7 +330,7 @@
                 },
                 onEnter: ['$stateParams', '$state', 'Movie', '$uibModal', function ($stateParams, $state, Movie, $uibModal) {
                     $uibModal.open({
-                        templateUrl: 'app/entities/question/question-dialog.html',
+                        templateUrl: 'static/app/entities/question/question-dialog.html',
                         controller: 'QuestionDialogController',
                         controllerAs: 'vm',
                         backdrop: 'static',
@@ -365,7 +365,7 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/movie/movie-edit.html',
+                        templateUrl: 'static/app/entities/movie/movie-edit.html',
                         controller: 'MovieEditController',
                         controllerAs: 'vm'
                     }
@@ -384,7 +384,7 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        templateUrl: 'app/entities/question/question-delete-dialog.html',
+                        templateUrl: 'static/app/entities/question/question-delete-dialog.html',
                         controller: 'QuestionDeleteController',
                         controllerAs: 'vm',
                         size: 'md',
@@ -409,7 +409,7 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/movie/movie-detail.html',
+                        templateUrl: 'static/app/entities/movie/movie-detail.html',
                         controller: 'MovieDetailController',
                         controllerAs: 'vm'
                     }
@@ -428,7 +428,7 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        templateUrl: 'app/entities/question/question-dialog.html',
+                        templateUrl: 'static/app/entities/question/question-dialog.html',
                         controller: 'QuestionDialogController',
                         controllerAs: 'vm',
                         backdrop: 'static',
@@ -475,7 +475,7 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        templateUrl: 'app/entities/movie/movie-delete-dialog.html',
+                        templateUrl: 'static/app/entities/movie/movie-delete-dialog.html',
                         controller: 'MovieDeleteController',
                         controllerAs: 'vm',
                         size: 'md',

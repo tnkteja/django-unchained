@@ -31,3 +31,8 @@ print '-'*32
 r=c.post("/api/register",{"username":rstring(),"email": "ntadiko@ncsu.edu","password":"ntadiko"})
 print r.status_code
 print r.content
+
+print '-'*32
+r=c.get("/api/movies/public/")
+print r.status_code
+print r.content

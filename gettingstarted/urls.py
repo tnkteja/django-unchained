@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^api/account/reset_password/init', AccountViewSet.as_view({ "post": "reset_password_init"})),
     url(r'^api/account/reset_password/finish', AccountViewSet.as_view({ "post": "reset_password_finish"})),
     url(r'^api/account', AccountViewSet.as_view({ "get" : "get", "post": "update" })),
-    url(r"^api/movies/public",MoviePublicViewSet.as_view()),
+    url(r"^api/movies/public",MoviePublicViewSet.as_view({"get": "list"})),
     url(r'^api/',include(restrouter.urls)),
     url(r'^admin/', include(admin.site.urls)),
     url('', include('social.apps.django_app.urls', namespace='social'))

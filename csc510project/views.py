@@ -1,11 +1,8 @@
 #!/usr/bi/python
-from __future__ import unicode_literals
 
-from base64 import b64encode
 from hashlib import md5
 from json import loads, dumps
 import logging
-from time import time
 
 from django.contrib.auth import authenticate, login, logout as Logout
 from django.contrib.auth.models import User
@@ -19,15 +16,11 @@ from rest_framework import viewsets
 from .models import Movie, Critic, ExtendedUser
 from django.contrib.auth.models import User
 from .serializers import MovieSerializer, UserSerializer, CriticSerializer
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout as Logout
 from django.forms.models import model_to_dict
-from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK
 from rest_framework.decorators import api_view
-from rest_framework.views import APIView
-from rest_framework import status
+from rest_framework import status, permissions
 import logging
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .serializers import UserSerializer
@@ -41,6 +34,10 @@ def index(request):
     logger.debug(request)
     return render_to_response(request, 'index.html')
 
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+
 class CriticViewSet(viewsets.ModelViewSet):
     queryset = Critic.objects.all()
     serializer_class = CriticSerializer
@@ -52,7 +49,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 def authentication(request):
     user = authenticate(username=request.POST["j_username"],password=request.POST["j_password"])
-    if user:
+    if user and user.is_active:
         login(request, user)
         return HttpResponse()
     return HttpResponseBadRequest()
@@ -76,12 +73,6 @@ def account(request):
         "roles":request.user.extendedUser.roles
         }) if request.user.is_authenticated else HttpResponseUnauthorized()
 
-def create_extendeduser(backend, user, response, *args, **kwargs):
-    if not hasattr(user, "extendeduser"):
-        user.extendeduser=ExtendedUser()
-        user.extendeduser.roles=dumps(["ROLE_USER"])
-        user.extendeduser.save()
-    #user.email_user("Account Created","", "csc510project@gmail.com", fail_silently=False)
 
 class AccountViewSet(viewsets.ViewSet):
     def get(self, request):
@@ -90,7 +81,7 @@ class AccountViewSet(viewsets.ViewSet):
             "first_name": request.user.first_name,
             "last_name": request.user.last_name,
             "email": request.user.email,
-            "authorities": loads(request.user.extendeduser.roles)
+            "roles": loads(request.user.extendeduser.roles)
             }) if request.user.is_authenticated else HttpResponseUnauthorized()
 
     def update(self,request, *args, **kwargs):
@@ -116,24 +107,24 @@ class AccountViewSet(viewsets.ViewSet):
             return HttpResponseBadRequest(e)
 
     def register(self, request):
-        # try:
         try:
-            User.objects.get(username=request.data["username"])
-            return HttpResponseBadRequest("Username already exists")
-        except User.DoesNotExist as e:
-            u=User.objects.create_user(request.data["username"], email=request.data["email"], password=request.data["password"])
-            u.extendeduser=ExtendedUser()
-            u.extendeduser.roles=dumps(["ROLE_USER"])
-            m=md5()
-            m.update(u.username+u.email)
-            u.extendeduser.activationkey=b64encode(m.digest())
-            u.extendeduser.save()
-            u.is_active = False
-            u.save()
-            send_mail("Activate",u.extendeduser.activationkey, "csc510project@gmail.com", [u.email], fail_silently=False)
-            return HttpResponse()
-        # except Exception as e:
-        #     return HttpResponseBadRequest(e)
+            try:
+                User.objects.get(username=request.data["username"])
+                return HttpResponseBadRequest("Username already exists")
+            except User.DoesNotExist as e:
+                u=User.create_user(request.data["username"], email=request.data["email"], password=request.data["password"])
+                u.extendeduser=Extendeduser()
+                u.extendeduser.roles=dumps(["ROLE_USER"])
+                m=md5()
+                m.update(u.username+u.email)
+                u.extendeduser.activationkey=m.digest()
+                u.extendeduser.save()
+                u.is_active = False
+                u.save()
+                send_mail("Activate",self.__class__.mail_template%(u.username,'',u.extendeduser.activationkey,"admin."), "csc510project@gmail.com", [u.email])
+                return HttpResponse()
+        except Exception as e:
+            return HttpResponseBadRequest(e)
 
     mail_template = \
     """
@@ -164,66 +155,29 @@ class AccountViewSet(viewsets.ViewSet):
 
     def activate(self, request, *args, **kwargs):
         try:
-            eu=ExtendedUser.objects.get(activationkey=request.GET["key"])
-            if eu.user.is_active:
-                return HttpResponseBadRequest("User already activated.")
+            eu=ExtendedUser.objects.get(activationkey=self.request.data["key"])
             eu.user.is_active=True
-            eu.user.save()
             return HttpResponse()
         except Exception as e:
             return HttpResponseBadRequest(e)
 
-    def reset_password_init(self, request, *args, **kwargs):
-        try:
-            u=User.objects.get(email=request.POST["email"])[0]
-            m=md5()
-            m.update(u.username+u.email+time())
-            u.extendeduser.resetkey=b64encode(m.digest())
-            u.extendeduserresetkeyexpirytime = time() + 86400
-            u.extendeduser.save()
-            u.email_user("Reset Password",u.extendeduser.resetkey, "csc510project@gmail.com", fail_silently=False)
-            return HttpResponse()
-        except User.DoesNotExist as e:
-            HttpResponseBadRequest("e-mail address not registered")
-        except Exception as e:
-            return HttpResponseBadRequest(e)
+    def reset_begin(self, request, *args, **kwargs):
+        pass
 
-    def reset_password_finish(self, request, *args, **kwargs):
-        try:
-            eu=ExtendedUser.objects.get(resetkey=request.POST["key"])
-            if time() > eu.resetkeyexpirytime:
-                eu.user.set_password(request.POST("new_password"))
-                eu.user.save()
-                return HttpResponse()
-            return HttpResponseBadRequest("Reset Key Expired")
-        except Exception as e:
-            return HttpResponseBadRequest(e)
+    def reset_end(self, request, *args, **kwargs):
+        pass
 
 
 class ExtendedAccountViewSet(viewsets.ViewSet):
 
     def become_critic(self, request):
         try:
-            u=request.user
-            if u.is_authenticated:
-                u.critic=Critic()
-                u.critic.isActive=True
-                u.critic.save()
-                roles=loads(u.extendeduser.roles)
-                roles.append("ROLE_CRITIC")
-                u.extendeduser.roles=dumps(roles)
-                u.extendeduser.save()
             return HttpResponse()
         except Exception as e:
             return HttpResponseBadRequest(e)
 
-class MovieViewSet(viewsets.ModelViewSet):
+
+class MoviePublicViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
-
-class MoviePublicViewSet(APIView):
-    permission_classes=(IsAuthenticatedOrReadOnly,)
-    pagination_class = LimitOffsetPagination
-
-    def get(self, request, format=None):
-       return HttpResponse()
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)

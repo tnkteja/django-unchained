@@ -33,6 +33,6 @@ c = Client()
 # print r.content
 
 print '-'*32
-r=c.get("/api/movies/public/")
+r=c.get("/api/movies/public?cacheBuster=1484259881160&page=1&size=20&sort=id")
 print r.status_code
-print r.content
+print loads(r.content)

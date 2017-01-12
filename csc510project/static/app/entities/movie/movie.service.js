@@ -10,7 +10,13 @@
         var resourceUrl =  'api/movies/public/:id';
 
         return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
+            'query': { 
+                method: 'GET', 
+                isArray: true
+                transformResponse: function(response) {
+                    return response["results"]
+                }
+            },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

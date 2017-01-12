@@ -7,13 +7,12 @@ from django.db.models import *
 # Create your models here.
 class Movie(Model):
 	title=CharField(max_length=255)
+	name=CharField(max_length=255)
 	image=CharField(max_length=255)
 	approval=IntegerField()
 	description=TextField()
 	weights=CharField(max_length=255)
 	review_ready=BooleanField()
-	
-
 
 class Critic(Model):
 	user= OneToOneField(settings.AUTH_USER_MODEL, on_delete=CASCADE)

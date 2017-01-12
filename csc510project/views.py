@@ -21,6 +21,7 @@ from django.forms.models import model_to_dict
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status, permissions
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination, CursorPagination
 import logging
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .serializers import UserSerializer
@@ -178,6 +179,12 @@ class ExtendedAccountViewSet(viewsets.ViewSet):
 
 
 class MoviePublicViewSet(viewsets.ModelViewSet):
+    class CustomPaginationClass(PageNumberPagination):
+        #page_query_param="page" # "page" is default
+        page_size=10
+        page_size_query_param="size"
+        max_page_size=50
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    pagination_class = CustomPaginationClass

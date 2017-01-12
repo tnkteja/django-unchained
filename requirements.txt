@@ -7,3 +7,4 @@ djangorestframework==3.4.7
 django-social-auth==0.7.28
 tropo-webapi-python==0.1.3
 python-social-auth==0.2.21
+django-haystack==2.6.0

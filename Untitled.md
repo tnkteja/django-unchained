@@ -35,6 +35,7 @@ Endpoints are the specific resource locations that offer each or a collection of
 
 ##### Icons
 
-
-## References
-1. _https://klarsys.github.io/angular-material-icons/_
+|||
+:-:|:-:
+_http://google.github.io/material-design-icons/_| NA
+_https://klarsys.github.io/angular-material-icons/_| NA

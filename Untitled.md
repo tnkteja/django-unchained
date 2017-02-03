@@ -24,3 +24,17 @@ Endpoints are the specific resource locations that offer each or a collection of
 
 ### Web 1.0 vs Web 2.0
 
+
+## Frameworks
+
+### Frontend
+
+#### Looks and Appeal
+
+##### Angular-Material
+
+##### Icons
+
+
+## References
+1. _https://klarsys.github.io/angular-material-icons/_

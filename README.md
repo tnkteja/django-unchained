@@ -3,7 +3,10 @@ It is a opiniated view of the complete Web Application using Web APIs, based on 
 ## Docker is use to deploy 
 ### to AWS EC2
 A docker image is built on python 2.7 base image and deployed to EC2 instance running docker host.[1]
-### to AWS ECS
+### to AWS EC2 Container
+the docker image built is pushed to the ECS and a  container is instantiated on a default ec2 container instance.
+Configuration for the container logs are sent to the cloud watch east region.
+
 ### 
 
 ## References

@@ -2,9 +2,12 @@ It is a opiniated view of the complete Web Application using Web APIs, based on 
 
 ## Docker is use to deploy 
 ### to AWS EC2
-A docker image is built on python 2.7 base image and deployed to EC2 instance running docker host.
+A docker image is built on python 2.7 base image and deployed to EC2 instance running docker host.[1]
 ### to AWS ECS
 ### 
+
+## References
+1. _https://docs.docker.com/machine/examples/aws/_
 # python-getting-started
 
 A barebones Python app, which can easily be deployed to Heroku.

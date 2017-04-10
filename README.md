@@ -1,5 +1,10 @@
 It is a opiniated view of the complete Web Application using Web APIs, based on python's **DJANGO** framework. The core authentication mechanism is django based, and it  also includes a mashup consisting of various social logins.
 
+## Docker is use to deploy 
+### to AWS EC2
+A docker image is built on python 2.7 base image and deployed to EC2 instance running docker host.
+### to AWS ECS
+### 
 # python-getting-started
 
 A barebones Python app, which can easily be deployed to Heroku.
